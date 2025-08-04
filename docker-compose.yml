@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: fastform
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: fastform
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DB_URL=postgresql://postgres:fastform@db:5432/fastform
+      - API_KEY_OPENAI=${API_KEY_OPENAI}
+      - APP_NAME=FastpeerAI FastForm
+      - APP_VERSION=0.1.0
+      - APP_CORS_ALLOW_ORIGINS=["*"]
+      - APP_CORS_ALLOW_CREDENTIALS=true
+      - APP_CORS_ALLOW_METHODS=["*"]
+      - APP_CORS_ALLOW_HEADERS=["*"]
+      - APP_DOCS_ENABLED=true
+      - APP_DEV_MODE=true
+
+volumes:
+  postgres_data:

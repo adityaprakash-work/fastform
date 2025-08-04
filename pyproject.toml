@@ -1,0 +1,91 @@
+[project]
+name = "fastform"
+version = "0.3.0"
+description = "Automated template generation and form filling."
+readme = "README.md"
+requires-python = ">=3.12"
+
+authors = [
+    { name = "Aditya Prakash", email = "adityapraksh.work@gmail.com" },
+]
+# core runtime dependencies (if any)
+dependencies = [
+    "fastapi>=0.115.13",
+    "fitz>=0.0.1.dev2",
+    "guidance",
+    "matplotlib>=3.10.3",
+    "openai>=1.88.0",
+    "pillow>=11.2.1",
+    "psycopg2-binary>=2.9.10",
+    "pydantic-settings>=2.9.1",
+    "pydantic[email]>=2.11.7",
+    "pymupdf>=1.26.1",
+    "pypdf>=5.6.1",
+    "sqlmodel>=0.0.24",
+    "uvicorn>=0.35.0",
+]
+
+[build-system]
+requires = ["setuptools>=42"]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+# Exclude common directories for Python and Jupyter projects.
+exclude = [
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    "__pycache__",
+    "build",
+    "dist",
+    "site-packages",
+    "venv",
+    ".venv",
+    "*.egg-info",
+    "*.ipynb_checkpoints",
+    ".vscode",
+]
+
+# Same as Black.
+line-length = 88
+indent-width = 4
+
+# Assume Python 3.12
+target-version = "py312"
+
+[tool.ruff.lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`) codes by default.
+select = ["E4", "E7", "E9", "F"]
+ignore = ["F401"]
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+
+[tool.uv.sources]
+guidance = { git = "https://github.com/guidance-ai/guidance.git" }
+
+# Organizing imports with Ruff's integrated isort support
+[tool.ruff.lint.isort]
+known-third-party = ["numpy", "langgraph", "guidance"]
+force-sort-within-sections = true
+combine-as-imports = true
+order-by-type = true
